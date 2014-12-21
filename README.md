@@ -39,4 +39,4 @@ print Panel->new({
 
 ## Work in progress
 
-I started working on this project while programming two websites with similar requirements - Perl/CGI and MySQL at the server side together with bootstrap and jQuery at the frontend side. Hence, the only framework extension provided so far is bootstrap. Functionality is very limited and documentation is not present. I hope it will be evolved further in the near future.
+I started working on this project while creating two websites with similar requirements - Perl/CGI and MySQL at the server side together with bootstrap and jQuery at the frontend side. Hence, the only framework extension provided so far is bootstrap. Functionality is very limited and documentation is not present. I hope it will be evolved further in the near future.
