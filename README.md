@@ -25,7 +25,7 @@ If you would like to use a bootstrap "panel" in your HTML, you would use this HT
 </div>
 ```
 
-Instead of this, with WebSite you could write:
+Instead of this, with the WebSite framework extension you could write:
 
 ```perl
 print Panel->new({
