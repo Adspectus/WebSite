@@ -9,7 +9,7 @@ WebSite is a collection of Perl Modules which provide object oriented extensions
 
 ## Example
 
-If you would like to use a bootstrap "panel" in your HTML code, you would use this HTML code:
+If you would like to use a bootstrap "panel" in your HTML, you would use this HTML code:
 
 ```html
 <div id="Panel_Test" class="panel panel-default">
