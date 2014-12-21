@@ -25,7 +25,7 @@ If you would like to use a bootstrap "panel" in your HTML, you would use this HT
 </div>
 ```
 
-Instead of this, you could write:
+Instead of this, with WebSite you could write:
 
 ```perl
 print Panel->new({
@@ -39,4 +39,4 @@ print Panel->new({
 
 ## Work in progress
 
-I started working on this project while programming two websites with similar requirements - Perl/CGI and MySQL at the server side together with bootstrap and jQuery at the frontend side. Hence, the only framework extension provided so far is bootstrap. Functionality is very limited and documentation is not present. I hope it will be evolved further in the next time.
+I started working on this project while programming two websites with similar requirements - Perl/CGI and MySQL at the server side together with bootstrap and jQuery at the frontend side. Hence, the only framework extension provided so far is bootstrap. Functionality is very limited and documentation is not present. I hope it will be evolved further in the near future.
