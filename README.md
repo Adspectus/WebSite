@@ -5,7 +5,7 @@ A framework extension for Perl CGI
 
 ## Overview
 
-WebSite is a collection of Perl Modules which provide object oriented extensions to Perl CGI. These extensions are more or less simple interfaces to HTML snippets required when using a framework such as bootstrap.
+WebSite is a collection of Perl Modules to provide object oriented extensions to Perl CGI when using a framework such as bootstrap. It is extensible to more features of the framework as well to other frameworks.
 
 ## Example
 
@@ -36,7 +36,24 @@ print Panel->new({
   Solo    => 1,
 });
 ```
+or, put the HTML content into a variable for later use or manipulation:
 
-## Work in progress
+```perl
+my $Panel = Panel->new({ OPTIONS });
+$Panel->setContent('My Content');
+```
 
-I started working on this project while crafting two websites with similar requirements - Perl/CGI and MySQL at the server side together with bootstrap and jQuery at the frontend side. Hence, the only framework extension provided so far is bootstrap. Functionality is very limited and documentation is not present. I hope it will be evolved further in the near future.
+## Supported Frameworks
+
+So far, only bootstrap is supported and not all elements are implemented yet. The idea is to support more frameworks with the same interfaces which would make it easy to change them without major modifications of your code.
+
+For example, to define a navigation panel entry with bootstrap you could write:
+
+```perl
+use WebSite::Framework::Bootstrap;
+
+my $Start = NavBar->new({'ID' => 'start','Order' => 0,'Title' => 'Startseite'});
+$Start->setPane($CGI->div({-class => 'row'},$CGI->div({-class => 'col-xs-12'},$CGI->h2({-class => 'text-center'},'Some Text') . $DateString)));
+```
+and it should be possible to switch the framework only with the use statement.
+
