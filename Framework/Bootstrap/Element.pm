@@ -1,7 +1,7 @@
 package Element;
 
 use constant { TRUE => 1, FALSE => 0 };
-use feature 'switch';
+#use feature 'switch';
 use parent qw(WebSite::Framework::Bootstrap);
 use CGI qw(:html :form);
 
@@ -31,32 +31,32 @@ sub output {
   my ($self) = (@_);
 
   my $Element = '';
-  given ($self->{'Type'}) {
-    when ('Hidden') {
+  for ($self->{'Type'}) {
+    if (/Hidden/) {
       $Element = input({-type => 'hidden',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-value => $self->get('Value')});
       return div({-id => $self->get('ID'),-class => 'form-group'},$Element);
     }
-    when ('TextField') {
+    elsif (/TextField/) {
       $Element = input({-type => 'text',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled'));
       $Element = input({-type => 'text',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value'),-disabled => TRUE}) if ($self->get('Disabled'));
     }
-    when ('Password') {
+    elsif (/Password/) {
       $Element = input({-type => 'password',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled'));
       $Element = input({-type => 'password',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value'),-disabled => TRUE}) if ($self->get('Disabled'));
     }
-    when ('EMail') {
+    elsif (/EMail/) {
       $Element = input({-type => 'email',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled'));
       $Element = input({-type => 'email',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value'),-disabled => TRUE}) if ($self->get('Disabled'));
     }
-    when ('FileField') {
+    elsif (/FileField/) {
       $Element = filefield(-id => $self->get('ID'),-name => $self->get('Name'),-class  => 'form-control') unless ($self->get('Disabled'));
       $Element = filefield(-id => $self->get('ID'),-name => $self->get('Name'),-class  => 'form-control',-disabled => TRUE) if ($self->get('Disabled'));
     }
-    when ('ScrollingList') {
+    elsif (/ScrollingList/) {
       $Element = scrolling_list(-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-values => $self->get('Values'),-size => $self->get('Size'),-labels => $self->get('Labels')) unless ($self->get('Disabled'));
       $Element = scrolling_list(-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-values => $self->get('Values'),-size => $self->get('Size'),-labels => $self->get('Labels'),-disabled => TRUE) if ($self->get('Disabled'));
     }
-    when ('Checkbox') {
+    elsif (/Checkbox/) {
       if ($self->get('Checked')) {
         $Element = input({-type => 'checkbox',-id => $self->get('ID'),-name => $self->get('Name'),-checked => 'true'}) unless ($self->get('Disabled'));
         $Element = input({-type => 'checkbox',-id => $self->get('ID'),-name => $self->get('Name'),-checked => 'true',-disabled => 'true'}) if ($self->get('Disabled'));
@@ -66,7 +66,7 @@ sub output {
         $Element = input({-type => 'checkbox',-id => $self->get('ID'),-name => $self->get('Name'),-disabled => 'true'}) if ($self->get('Disabled'));
       }
     }
-    default {
+    else {
       $Element = span({-class => 'alert alert-danger'},'The element '.code($self->get('Type')).' is not defined!');
     }
   }

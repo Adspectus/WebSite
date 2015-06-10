@@ -2,7 +2,7 @@ package Dropdown;
 
 use constant { TRUE => 1, FALSE => 0 };
 use parent qw(WebSite::Framework::Bootstrap);
-use CGI qw(:standard -any Button);
+use CGI qw(:standard);
 
 sub new {
   my ($class,$args) = (@_);
@@ -80,7 +80,7 @@ package Dropdown::Element;
 
 use constant { TRUE => 1, FALSE => 0 };
 use parent qw(WebSite::Framework::Bootstrap);
-use CGI qw(:standard -any Button);
+use CGI qw(:standard);
 
 sub new {
   my ($class,$args) = (@_);

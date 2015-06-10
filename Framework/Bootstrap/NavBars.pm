@@ -2,7 +2,7 @@ package NavBars;
 
 use constant { TRUE => 1, FALSE => 0 };
 use parent qw(WebSite::Framework::Bootstrap);
-use CGI qw(:standard -any Button);
+use CGI qw(:standard);
 
 sub new {
   my ($class,$args) = (@_);
@@ -74,7 +74,7 @@ sub output {
   @Tabs = grep { $_->get('Order') } @Tabs;
   
   my $NavHeader  = $self->getBrand();
-  $NavHeader     = Button({-type => 'button',-class => 'navbar-toggle collapsed',-data_toggle =>'collapse',-data_target => '#navbar-collapse-1'},span({-class => 'icon-bar'},['','',''])) . $NavHeader if (scalar(@Tabs));
+  $NavHeader     = &HTML::Button({-type => 'button',-class => 'navbar-toggle collapsed',-data_toggle =>'collapse',-data_target => '#navbar-collapse-1'},span({-class => 'icon-bar'},['','',''])) . $NavHeader if (scalar(@Tabs));
   my $Navigation = ul({-id => 'Nav',-class => 'nav navbar-nav'},join("",map { $_->output('Title') } @Tabs));
   my $NavBar = div({-class => 'navbar-header'},$NavHeader).div({-id => 'navbar-collapse-1',-class => 'collapse navbar-collapse'},$Navigation);
   return $NavBar if ($key eq 'Title');

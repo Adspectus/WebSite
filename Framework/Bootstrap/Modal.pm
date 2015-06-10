@@ -2,7 +2,7 @@ package Modal;
 
 use constant { TRUE => 1, FALSE => 0 };
 use parent qw(WebSite::Framework::Bootstrap);
-use CGI qw(:standard -any Button);
+use CGI qw(:standard);
 
 sub new {
   my ($class,$args) = (@_);
@@ -112,9 +112,9 @@ sub prependFooter {
 
 sub output {
   my ($self) = (@_);
-  my $Header = div({-class => 'modal-header'},Button({-type => 'button',-class => 'close',-data_dismiss => 'modal'},span({-aria_hidden => 'true'},'&times;')),h4({-id => $self->getID().'Label',-class => 'modal-title'},$self->getHeader()));
+  my $Header = div({-class => 'modal-header'},&HTML::Button({-type => 'button',-class => 'close',-data_dismiss => 'modal'},span({-aria_hidden => 'true'},'&times;')),h4({-id => $self->getID().'Label',-class => 'modal-title'},$self->getHeader()));
   my $Body = div({-id => $self->getID().'Message',-class => 'modal-body'},$self->getBody());
-  my $Footer = div({-class => 'modal-footer'},Button({-type => 'button',-class => 'btn btn-success',-data_dismiss => 'modal'},$self->getFooter()));
+  my $Footer = div({-class => 'modal-footer'},&HTML::Button({-type => 'button',-class => 'btn btn-success',-data_dismiss => 'modal'},$self->getFooter()));
   return div({-id => $self->getID(),-class => 'modal'.($self->isFade() ? ' fade' : ''),-tabindex => '-1',-aria_labelledby => $self->getID().'Label',-aria_hidden => 'true'},div({-class => 'modal-dialog '.$self->getSize()},div({-class => $self->getContentClass()},$Header . $Body . $Footer)));
 }
 
