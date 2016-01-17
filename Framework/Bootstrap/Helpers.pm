@@ -9,5 +9,11 @@ sub HeaderText {
   return span({-class => 'h5 visible-xs-inline'},$Text).span({-class => 'h3 visible-sm-inline'},$Text).span({-class => 'h3 visible-md-inline'},$Text).span({-class => 'h2 visible-lg-inline'},$Text);
 }
 
-1;
+sub Icon {
+  my $Type = shift;
+  my $Color = shift;
+  return span({-class => 'glyphicon glyphicon-'.$Type,-style => 'color:'.$Color.';'},'') if ($Color);
+  return span({-class => 'glyphicon glyphicon-'.$Type},'');
+}
 
+1;
