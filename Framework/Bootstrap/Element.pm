@@ -20,6 +20,7 @@ sub new {
     'LabelClass'  => $args->{'LabelClass'}  || 'col-lg-1',
     'Class'       => $args->{'Class'}       || 'col-lg-4',
     'HelpClass'   => $args->{'HelpClass'}   || 'col-lg-7',
+    'Default'     => $args->{'Default'}     || [],
     'Checked'     => exists($args->{'Checked'}) ? $args->{'Checked'} : FALSE,
     'Disabled'    => exists($args->{'Disabled'}) ? $args->{'Disabled'} : FALSE,
   };
@@ -53,8 +54,8 @@ sub output {
       $Element = filefield(-id => $self->get('ID'),-name => $self->get('Name'),-class  => 'form-control',-disabled => TRUE) if ($self->get('Disabled'));
     }
     elsif (/ScrollingList/) {
-      $Element = scrolling_list(-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-values => $self->get('Values'),-size => $self->get('Size'),-labels => $self->get('Labels')) unless ($self->get('Disabled'));
-      $Element = scrolling_list(-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-values => $self->get('Values'),-size => $self->get('Size'),-labels => $self->get('Labels'),-disabled => TRUE) if ($self->get('Disabled'));
+      $Element = scrolling_list(-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-values => $self->get('Values'),-size => $self->get('Size'),-labels => $self->get('Labels'),-default => $self->get('Default')) unless ($self->get('Disabled'));
+      $Element = scrolling_list(-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-values => $self->get('Values'),-size => $self->get('Size'),-labels => $self->get('Labels'),-default => $self->get('Default'),-disabled => TRUE) if ($self->get('Disabled'));
     }
     elsif (/Checkbox/) {
       if ($self->get('Checked')) {
