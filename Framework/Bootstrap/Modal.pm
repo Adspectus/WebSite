@@ -8,7 +8,7 @@ sub new {
   my ($class,$args) = (@_);
   my $self = {
     'ID'             =>  $args->{'ID'},
-    'Size'           =>  $args->{'Size'}          || 'small',
+    'Size'           =>  $args->{'Size'}          || 'medium',
     'ContentClass'   =>  $args->{'ContentClass'}  || 'modal-content',
     'Fade'           =>  exists($args->{'Fade'}) ? $args->{'Fade'} : FALSE,
     'Header'         =>  $args->{'Header'}        || '',
@@ -42,6 +42,7 @@ sub setSize {
 sub getSize {
   my ($self) = (@_);
   return 'modal-sm' if ($self->get('Size') eq 'small');
+  return '' if ($self->get('Size') eq 'medium');
   return 'modal-lg' if ($self->get('Size') eq 'large');
 }
 
