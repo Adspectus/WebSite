@@ -17,45 +17,47 @@ sub new {
     'Values'      => $args->{'Values'}      || [],
     'Labels'      => $args->{'Labels'}      || {},
     'Size'        => $args->{'Size'}        || '1',
-    'LabelClass'  => $args->{'LabelClass'}  || 'col-lg-1',
+    'FieldClass'  => $args->{'FieldClass'}.' form-control'   || 'form-control',
+    'LabelClass'  => $args->{'LabelClass'}.' control-label'  || 'col-lg-1 control-label',
     'Class'       => $args->{'Class'}       || 'col-lg-4',
-    'HelpClass'   => $args->{'HelpClass'}   || 'col-lg-7',
+    'HelpClass'   => $args->{'HelpClass'}.' help-block'      || 'col-lg-7 help-block',
     'Default'     => $args->{'Default'}     || [],
     'Checked'     => exists($args->{'Checked'}) ? $args->{'Checked'} : FALSE,
     'Disabled'    => exists($args->{'Disabled'}) ? $args->{'Disabled'} : FALSE,
+    'Help'        => exists($args->{'Help'}) ? $args->{'Help'} : TRUE,
   };
   my $object = bless $self,$class;
   return $object;
 }
 
-sub output {
+sub Element {
   my ($self) = (@_);
 
   my $Element = '';
   for ($self->{'Type'}) {
     if (/Hidden/) {
-      $Element = input({-type => 'hidden',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-value => $self->get('Value')});
-      return div({-id => $self->get('ID'),-class => 'form-group'},$Element);
+      $Element = input({-type => 'hidden',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-value => $self->get('Value')});
+      $self->{'Help'} = FALSE;
     }
     elsif (/TextField/) {
-      $Element = input({-type => 'text',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled'));
-      $Element = input({-type => 'text',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value'),-disabled => TRUE}) if ($self->get('Disabled'));
+      $Element = input({-type => 'text',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled'));
+      $Element = input({-type => 'text',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-placeholder => $self->get('Placeholder'),-value => $self->get('Value'),-disabled => TRUE}) if ($self->get('Disabled'));
     }
     elsif (/Password/) {
-      $Element = input({-type => 'password',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled'));
-      $Element = input({-type => 'password',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value'),-disabled => TRUE}) if ($self->get('Disabled'));
+      $Element = input({-type => 'password',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled'));
+      $Element = input({-type => 'password',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-placeholder => $self->get('Placeholder'),-value => $self->get('Value'),-disabled => TRUE}) if ($self->get('Disabled'));
     }
     elsif (/EMail/) {
-      $Element = input({-type => 'email',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled'));
-      $Element = input({-type => 'email',-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-placeholder => $self->get('Placeholder'),-value => $self->get('Value'),-disabled => TRUE}) if ($self->get('Disabled'));
+      $Element = input({-type => 'email',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled'));
+      $Element = input({-type => 'email',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-placeholder => $self->get('Placeholder'),-value => $self->get('Value'),-disabled => TRUE}) if ($self->get('Disabled'));
     }
     elsif (/FileField/) {
-      $Element = filefield(-id => $self->get('ID'),-name => $self->get('Name'),-class  => 'form-control') unless ($self->get('Disabled'));
-      $Element = filefield(-id => $self->get('ID'),-name => $self->get('Name'),-class  => 'form-control',-disabled => TRUE) if ($self->get('Disabled'));
+      $Element = filefield(-id => $self->get('ID'),-name => $self->get('Name'),-class  => $self->get('FieldClass')) unless ($self->get('Disabled'));
+      $Element = filefield(-id => $self->get('ID'),-name => $self->get('Name'),-class  => $self->get('FieldClass'),-disabled => TRUE) if ($self->get('Disabled'));
     }
     elsif (/ScrollingList/) {
-      $Element = scrolling_list(-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-values => $self->get('Values'),-size => $self->get('Size'),-labels => $self->get('Labels'),-default => $self->get('Default')) unless ($self->get('Disabled'));
-      $Element = scrolling_list(-id => $self->get('ID'),-name => $self->get('Name'),-class => 'form-control',-values => $self->get('Values'),-size => $self->get('Size'),-labels => $self->get('Labels'),-default => $self->get('Default'),-disabled => TRUE) if ($self->get('Disabled'));
+      $Element = scrolling_list(-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-values => $self->get('Values'),-size => $self->get('Size'),-labels => $self->get('Labels'),-default => $self->get('Default')) unless ($self->get('Disabled'));
+      $Element = scrolling_list(-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-values => $self->get('Values'),-size => $self->get('Size'),-labels => $self->get('Labels'),-default => $self->get('Default'),-disabled => TRUE) if ($self->get('Disabled'));
     }
     elsif (/Checkbox/) {
       if ($self->get('Checked')) {
@@ -71,12 +73,20 @@ sub output {
       $Element = span({-class => 'alert alert-danger'},'The element '.code($self->get('Type')).' is not defined!');
     }
   }
+  return $Element;
+}
+
+sub output {
+  my ($self) = (@_);
   return div({-id => $self->get('ID'),-class => 'form-group'},
-    label({-for => $self->get('ID'),-class => $self->get('LabelClass').' control-label'},$self->get('Label')) .
-    div({-class => $self->get('Class')},$Element) .
-#    div({-id => $self->get('ID').'_Help',-class => $self->get('HelpClass').' help-block'},span({-id => $self->get('ID'),-class => 'help-block'},''))
-    div({-id => $self->get('ID').'_Help',-class => $self->get('HelpClass').' help-block',-name => $self->get('Name').'_Help'},'')
+    ($self->{'Type'} =~ m/Hidden/ ? '' : label({-for => $self->get('ID'),-class => $self->get('LabelClass')},$self->get('Label'))) .
+    div({-class => $self->get('Class')},$self->Element()) . ($self->get('Help') ? div({-id => $self->get('ID').'_Help',-class => $self->get('HelpClass'),-name => $self->get('Name').'_Help'},'') : '')
   );
+}
+
+sub raw {
+  my ($self) = (@_);
+  return label({-for => $self->get('ID'),-class => $self->get('LabelClass')},$self->get('Label')).div({-class => $self->get('Class')},$self->Element());
 }
 
 1;
