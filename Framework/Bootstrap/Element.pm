@@ -13,20 +13,25 @@ sub new {
     'Type'        => $args->{'Type'}        || 'TextField',
     'Label'       => $args->{'Label'}       || ucfirst($args->{'Name'}),
     'Placeholder' => $args->{'Placeholder'} || $args->{'Label'} || ucfirst($args->{'Name'}) || $args->{'ID'},
-    'Value'       => $args->{'Value'}       || '',
+    'Value'       => exists($args->{'Value'}) ? $args->{'Value'} : '',
     'Values'      => $args->{'Values'}      || [],
     'Labels'      => $args->{'Labels'}      || {},
     'Size'        => $args->{'Size'}        || '1',
-    'FieldClass'  => $args->{'FieldClass'}.' form-control'   || 'form-control',
+    'FieldClass'  => $args->{'FieldClass'} ? $args->{'FieldClass'}.' form-control' : 'form-control',
     'LabelClass'  => $args->{'LabelClass'}.' control-label'  || 'col-lg-1 control-label',
     'Class'       => $args->{'Class'}       || 'col-lg-4',
     'HelpClass'   => $args->{'HelpClass'}.' help-block'      || 'col-lg-7 help-block',
     'Default'     => $args->{'Default'}     || [],
+    'Suffix'      => $args->{'Suffix'}      || '',
+    'Praefix'     => $args->{'Praefix'}     || '',
+    'LeftLabel'   => exists($args->{'LeftLabel'}) ? $args->{'LeftLabel'} : TRUE,
     'Checked'     => exists($args->{'Checked'}) ? $args->{'Checked'} : FALSE,
     'Disabled'    => exists($args->{'Disabled'}) ? $args->{'Disabled'} : FALSE,
+    'ReadOnly'    => exists($args->{'ReadOnly'}) ? $args->{'ReadOnly'} : FALSE,
     'Help'        => exists($args->{'Help'}) ? $args->{'Help'} : TRUE,
   };
   my $object = bless $self,$class;
+  $self->set('LabelClass',$self->get('LabelClass').($self->get('LeftLabel') ? '' : '-left'));
   return $object;
 }
 
@@ -40,8 +45,9 @@ sub Element {
       $self->{'Help'} = FALSE;
     }
     elsif (/TextField/) {
-      $Element = input({-type => 'text',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled'));
+      $Element = input({-type => 'text',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled') || $self->get('ReadOnly'));
       $Element = input({-type => 'text',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-placeholder => $self->get('Placeholder'),-value => $self->get('Value'),-disabled => TRUE}) if ($self->get('Disabled'));
+      $Element = input({-type => 'text',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-placeholder => $self->get('Placeholder'),-value => $self->get('Value'),-readonly => 'readonly'}) if ($self->get('ReadOnly'));
     }
     elsif (/Password/) {
       $Element = input({-type => 'password',-id => $self->get('ID'),-name => $self->get('Name'),-class => $self->get('FieldClass'),-placeholder => $self->get('Placeholder'),-value => $self->get('Value')}) unless ($self->get('Disabled'));
@@ -73,20 +79,28 @@ sub Element {
       $Element = span({-class => 'alert alert-danger'},'The element '.code($self->get('Type')).' is not defined!');
     }
   }
+  $Element  = span({-class => 'input-group-addon'},$self->get('Praefix')).$Element if ($self->get('Praefix'));
+  $Element .= span({-class => 'input-group-addon'},$self->get('Suffix')) if ($self->get('Suffix'));
+  return div({-class => 'input-group'},$Element) if ($self->get('Praefix') or $self->get('Suffix'));
   return $Element;
 }
 
 sub output {
   my ($self) = (@_);
-  return div({-id => $self->get('ID'),-class => 'form-group'},
-    ($self->{'Type'} =~ m/Hidden/ ? '' : label({-for => $self->get('ID'),-class => $self->get('LabelClass')},$self->get('Label'))) .
-    div({-class => $self->get('Class')},$self->Element()) . ($self->get('Help') ? div({-id => $self->get('ID').'_Help',-class => $self->get('HelpClass'),-name => $self->get('Name').'_Help'},'') : '')
-  );
+  my $Element = div({-class => $self->get('Class')},$self->Element());
+  my $Label   = $self->{'Type'} =~ m/Hidden/ ? '' : label({-for => $self->get('ID'),-class => $self->get('LabelClass')},$self->get('Label'));
+  my $Help    = $self->get('Help') ? div({-id => $self->get('ID').'_Help',-class => $self->get('HelpClass'),-name => $self->get('Name').'_Help'},'') : '';
+
+  return div({-id => $self->get('ID'),-class => 'form-group'}, $Label . $Element . $Help ) if ($self->get('LeftLabel'));
+  return div({-id => $self->get('ID'),-class => 'form-group'}, $Element . $Label . $Help ) unless ($self->get('LeftLabel'));
 }
 
 sub raw {
   my ($self) = (@_);
-  return label({-for => $self->get('ID'),-class => $self->get('LabelClass')},$self->get('Label')).div({-class => $self->get('Class')},$self->Element());
+  my $Element = div({-class => $self->get('Class')},$self->Element());
+  my $Label   = label({-for => $self->get('ID'),-class => $self->get('LabelClass')},$self->get('Label'));
+
+  return $Label . $Element;
 }
 
 1;
