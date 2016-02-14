@@ -12,8 +12,9 @@ sub HeaderText {
 sub Icon {
   my $Type = shift;
   my $Color = shift;
-  return span({-class => 'glyphicon glyphicon-'.$Type,-style => 'color:'.$Color.';'},'') if ($Color);
-  return span({-class => 'glyphicon glyphicon-'.$Type},'');
+  my $Tooltip = shift;
+  return span({-class => 'glyphicon glyphicon-'.$Type,-data_toggle => 'tooltip',-title => $Tooltip,-style => 'color:'.$Color.';'},'') if ($Color);
+  return span({-class => 'glyphicon glyphicon-'.$Type,-data_toggle => 'tooltip',-title => $Tooltip},'');
 }
 
 1;
