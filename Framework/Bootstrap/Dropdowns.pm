@@ -184,8 +184,9 @@ sub lowerOrder {
 sub output {
   my ($self,$key) = (@_);
   if ($key eq 'Title') {
-    return li({-class => '' . ($self->isActive() ? ' active' : '')},a({-data_toggle => 'tab',-href => '#'.$self->getID()},$self->getTitle())) if ($self->getTitle());
     return li({-class => 'divider'},'') unless ($self->getTitle());
+    return li({-class => ''},$self->getTitle()) if ($self->getID() =~ /^nolink/);
+    return li({-class => '' . ($self->isActive() ? ' active' : '')},a({-data_toggle => 'tab',-href => '#'.$self->getID()},$self->getTitle())) if ($self->getTitle());
   }
   return div({-id => $self->getID(),-class => 'tab-pane' . ($self->isActive() ? ' active' : '')},$self->getPane()) if ($key eq 'Pane');
 }
